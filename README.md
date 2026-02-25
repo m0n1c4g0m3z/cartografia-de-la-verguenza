@@ -5,6 +5,8 @@
 👉 Proyecto de referencia: *El muro de la vergüenza (2023)*  
 https://m0n1c4g0m3z.com/El-muro-de-la-verguenza
 
+La hipótesis del proyecto es que el suicidio juvenil no debe interpretarse como un hecho aislado ni como una “debilidad” individual, sino como una señal crítica de un sistema social. En ese sentido, la obra plantea una pregunta incómoda: qué responsabilidad tiene el mundo adulto —sus instituciones, discursos, violencias y omisiones— en las condiciones que producen o agravan ese sufrimiento.
+
 ---
 
 ## Concepto
