@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="es">
 <head>
@@ -18,12 +19,14 @@
 
 <body class="theme-light">
   <main id="app">
-    <div id="map"></div>
+    <div id="map" aria-label="Mapa de España"></div>
 
     <div class="mode-switch" role="group" aria-label="Cambiar régimen de visibilidad">
       <button id="btn-contexto" class="mode-btn is-active" type="button">Contexto</button>
       <button id="btn-consecuencias" class="mode-btn" type="button">Consecuencias</button>
     </div>
+
+    <div id="status" class="status" aria-live="polite"></div>
   </main>
 
   <script
