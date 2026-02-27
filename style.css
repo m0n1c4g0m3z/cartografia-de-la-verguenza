@@ -1,19 +1,16 @@
 /* style.css */
 
-/* Variables de tema: lo que pides exactamente
-   - Contexto: fondo blanco, todo lo demás negro
-   - Consecuencias: fondo negro, todo lo demás blanco
+/* Contexto:
+   - canvas/fondo blanco
+   - todo lo demás negro (polígonos, texto, UI)
+   Consecuencias:
+   - canvas/fondo negro
+   - todo lo demás blanco
 */
-:root{
-  --bg: #ffffff;
-  --fg: #000000;
-}
-
-body.theme-light { --bg:#ffffff; --fg:#000000; }
-body.theme-dark  { --bg:#000000; --fg:#ffffff; }
+body.mode-contexto { --bg:#ffffff; --fg:#000000; }
+body.mode-consecuencias { --bg:#000000; --fg:#ffffff; }
 
 html, body { height: 100%; }
-
 body{
   margin: 0;
   background: var(--bg);
@@ -21,20 +18,15 @@ body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
-#app{
-  height: 100%;
-  position: relative;
-}
-
-/* El “canvas” del mapa responde al tema */
+#app{ height: 100%; position: relative; }
 #map{
   height: 100%;
   width: 100%;
   background: var(--bg);
 }
 
-/* Conmutador inferior */
-.mode-switch{
+/* Botón inferior */
+.switch{
   position: absolute;
   left: 50%;
   bottom: 18px;
@@ -47,25 +39,26 @@ body{
   z-index: 1000;
 }
 
-.mode-btn{
+.switch-btn{
   padding: 10px 14px;
   font: inherit;
   cursor: pointer;
   border: 0;
   background: transparent;
   color: var(--fg);
+  letter-spacing: 0.2px;
 }
 
-.mode-btn.is-active{
+.switch-btn.is-active{
   background: var(--fg);
   color: var(--bg);
 }
 
-/* Estado (mensajes de carga) */
+/* Mensajes (si falta el geojson) */
 .status{
   position: absolute;
   left: 18px;
-  bottom: 18px;
+  top: 18px;
   z-index: 1000;
   font-size: 12px;
   line-height: 1.2;
@@ -74,12 +67,14 @@ body{
   background: var(--bg);
   color: var(--fg);
   border-radius: 10px;
-  max-width: min(360px, calc(100% - 36px));
+  max-width: min(520px, calc(100% - 36px));
   display: none;
 }
 .status.is-visible{ display: block; }
 
-/* Leaflet: haz que todo siga el régimen */
+/* Leaflet: que todo herede el régimen */
+.leaflet-container{ background: var(--bg) !important; }
+
 .leaflet-control-zoom a{
   background: var(--bg) !important;
   color: var(--fg) !important;
@@ -92,10 +87,6 @@ body{
   border-color: var(--fg) !important;
 }
 
-.leaflet-container{
-  background: var(--bg) !important;
-}
-
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip{
   background: var(--bg) !important;
@@ -103,7 +94,4 @@ body{
   border: 1px solid var(--fg) !important;
   box-shadow: none !important;
 }
-
-.leaflet-popup-close-button{
-  color: var(--fg) !important;
-}
+.leaflet-popup-close-button{ color: var(--fg) !important; }
