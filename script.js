@@ -1,39 +1,88 @@
-(function () {
-  const body = document.body;
-  const introLayer = document.getElementById('intro-layer');
-  const analysisLayer = document.getElementById('analysis-layer');
-  const enterBtn = document.getElementById('enter-btn');
-  const backBtn = document.getElementById('back-btn');
-  const yearRange = document.getElementById('year-range');
-  const yearValue = document.getElementById('year-value');
+let map;
+let ccaaLayer;
+let currentMode = 'contexto'; // 'contexto' | 'consecuencias'
 
-  function showAnalysis() {
-    body.classList.remove('theme-dark');
-    body.classList.add('theme-light');
-    introLayer.classList.add('hidden');
-    analysisLayer.classList.remove('hidden');
+function setMode(mode) {
+  currentMode = mode;
+
+  // Tema general
+  document.body.classList.toggle('theme-light', mode === 'contexto');
+  document.body.classList.toggle('theme-dark', mode === 'consecuencias');
+
+  // Botones
+  document.getElementById('btn-contexto').classList.toggle('is-active', mode === 'contexto');
+  document.getElementById('btn-consecuencias').classList.toggle('is-active', mode === 'consecuencias');
+
+  // Re-estilizar capa
+  if (ccaaLayer) ccaaLayer.setStyle(getCcaaStyle());
+}
+
+function getCcaaStyle() {
+  // Contexto: líneas negras sobre blanco
+  if (currentMode === 'contexto') {
+    return {
+      color: '#000000',
+      weight: 1.2,
+      fillColor: '#ffffff',
+      fillOpacity: 0.0, // solo líneas (sube si quieres relleno)
+    };
   }
 
-  function showIntro() {
-    body.classList.remove('theme-light');
-    body.classList.add('theme-dark');
-    analysisLayer.classList.add('hidden');
-    introLayer.classList.remove('hidden');
-  }
+  // Consecuencias: líneas blancas sobre negro
+  return {
+    color: '#ffffff',
+    weight: 1.2,
+    fillColor: '#000000',
+    fillOpacity: 0.0,
+  };
+}
 
-  enterBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    showAnalysis();
-  });
+function initMap() {
+  map = L.map('map', {
+    zoomControl: true,
+    attributionControl: true
+  }).setView([40.2, -3.7], 6);
 
-  introLayer.addEventListener('click', function (e) {
-    if (e.target === enterBtn) return;
-    showAnalysis();
-  });
+  // Base muy neutra: puedes dejarla o quitarla.
+  // Si quieres “solo líneas” (sin tiles), comenta esto.
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 10,
+    minZoom: 5
+  }).addTo(map);
 
-  backBtn.addEventListener('click', showIntro);
+  // Cargar CCAA GeoJSON
+  fetch('./data/ccaa.geojson', { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error('No se pudo cargar ccaa.geojson');
+      return r.json();
+    })
+    .then(geojson => {
+      ccaaLayer = L.geoJSON(geojson, {
+        style: getCcaaStyle(),
+        onEachFeature: (feature, layer) => {
+          layer.on('click', () => {
+            const name =
+              feature.properties?.name ||
+              feature.properties?.NAMEUNIT ||
+              feature.properties?.CCAA ||
+              '—';
+            layer.bindPopup(name).openPopup();
+          });
+        }
+      }).addTo(map);
 
-  yearRange.addEventListener('input', function () {
-    yearValue.textContent = yearRange.value;
-  });
-})();
+      // Encajar a España
+      map.fitBounds(ccaaLayer.getBounds(), { padding: [12, 12] });
+    })
+    .catch(err => console.error(err));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initMap();
+
+  document.getElementById('btn-contexto').addEventListener('click', () => setMode('contexto'));
+  document.getElementById('btn-consecuencias').addEventListener('click', () => setMode('consecuencias'));
+
+  // Estado inicial
+  setMode('contexto');
+});
