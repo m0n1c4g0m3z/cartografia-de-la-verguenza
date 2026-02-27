@@ -2,84 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cartografía de la vergüenza</title>
-  <meta name="description" content="Proyecto de visualización interactiva geoespacial sobre suicidio juvenil en España" />
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
 </head>
-<body class="theme-dark intro-active">
-  <main id="app" aria-label="Cartografía de la vergüenza">
-    <section id="intro-layer" class="layer intro" aria-label="Capa conceptual">
-      <div class="intro-content">
-        <h1>Cartografía de la vergüenza</h1>
-        <p class="subtitle">Una visualización geoespacial interactiva sobre suicidio juvenil en España</p>
-        <button id="enter-btn" type="button" aria-controls="analysis-layer">Entrar</button>
-        <p class="hint">Haz clic en la pantalla para activar la capa de análisis</p>
-      </div>
 
-      <!-- Placeholder visual del mapa (sustituir por SVG/imagen real o iframe oculto si quieres) -->
-      <div class="spain-placeholder" aria-hidden="true">
-        <div class="spain-shape"></div>
-      </div>
-    </section>
+<body class="theme-light">
+  <main id="app">
+    <div id="map"></div>
 
-    <section id="analysis-layer" class="layer analysis hidden" aria-label="Capa analítica-territorial">
-      <header class="topbar">
-        <div>
-          <h2>Cartografía de la vergüenza</h2>
-          <p class="subtitle">Capa analítica-territorial (prototipo sin datos)</p>
-        </div>
-        <button id="back-btn" type="button">Volver a capa conceptual</button>
-      </header>
-
-      <aside class="controls" aria-label="Controles de análisis (placeholder)">
-        <label>
-          Año
-          <input type="range" min="2015" max="2026" value="2024" step="1" id="year-range" />
-          <span id="year-value">2024</span>
-        </label>
-
-        <label>
-          Sexo
-          <select id="sex-filter">
-            <option value="total">Total</option>
-            <option value="hombres">Hombres</option>
-            <option value="mujeres">Mujeres</option>
-          </select>
-        </label>
-
-        <label>
-          Grupo de edad
-          <select id="age-filter">
-            <option value="15-29">15–29</option>
-            <option value="15-19">15–19</option>
-            <option value="20-24">20–24</option>
-            <option value="25-29">25–29</option>
-          </select>
-        </label>
-      </aside>
-
-      <section class="map-panel" aria-label="Mapa de análisis">
-        <div class="map-frame placeholder-map" id="map-frame">
-          <p>Inserta aquí el iframe de uMap (capa analítica)</p>
-          <p class="small">De momento es un placeholder para publicar el diseño y la transición.</p>
-        </div>
-      </section>
-
-      <section class="info-panel" aria-label="Panel de lectura territorial (placeholder)">
-        <h3>Lectura territorial</h3>
-        <ul>
-          <li>Comunidad autónoma: —</li>
-          <li>Número de suicidios (jóvenes): —</li>
-          <li>Tasa por 100.000: —</li>
-          <li>Método (si disponible): —</li>
-          <li>Variación vs año anterior: —</li>
-        </ul>
-        <p class="small">Este panel se conectará a los datos después.</p>
-      </section>
-    </section>
+    <div class="mode-switch" role="group" aria-label="Cambiar régimen de visibilidad">
+      <button id="btn-contexto" class="mode-btn is-active" type="button">Contexto</button>
+      <button id="btn-consecuencias" class="mode-btn" type="button">Consecuencias</button>
+    </div>
   </main>
 
-  <script src="script.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script src="./script.js"></script>
 </body>
 </html>
